@@ -21,16 +21,16 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-
 namespace TransferPayment\Constraints;
-use Symfony\Component\Validator\Constraint;
 
+use Symfony\Component\Validator\Constraint;
 
 /**
  * Class BIC
  * @package TransferPayment\Constraints 
  * @author Thelia <info@thelia.net>
  */
-class BIC extends Constraint {
+class BIC extends Constraint
+{
     public $message = "The BIC value is not valid";
-} 
+}

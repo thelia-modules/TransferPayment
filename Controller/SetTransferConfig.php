@@ -38,12 +38,18 @@ class SetTransferConfig extends BaseAdminController
 {
     public function configure()
     {
-        if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('TransferPayment'), AccessManager::UPDATE)) {
+        if (null !== $response = $this->checkAuth(
+            [AdminResources::MODULE],
+            ['TransferPayment'],
+            AccessManager::UPDATE)
+        ) {
             return $response;
         }
+
         $form = new ConfigureTransfer($this->getRequest());
         $config = new TransferPaymentConfig();
         $errmes = "";
+
         try {
             $vform= $this->validateForm($form);
 
@@ -51,10 +57,11 @@ class SetTransferConfig extends BaseAdminController
             $iban = $vform->get('iban')->getData();
             $bic = $vform->get('bic')->getData();
 
-                $config->setCompanyName($name)
-                    ->setIban($iban)
-                    ->setBic($bic)
-                    ->write();
+            $config
+                ->setCompanyName($name)
+                ->setIban($iban)
+                ->setBic($bic)
+                ->write();
 
         } catch (\Exception $e) {
             $errmes = $e->getMessage();

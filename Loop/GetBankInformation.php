@@ -27,7 +27,6 @@ use Thelia\Core\Template\Element\BaseLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Element\PropelSearchLoopInterface;
-
 use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Model\Base\OrderQuery;
@@ -122,5 +121,4 @@ class GetBankInformation extends BaseLoop implements PropelSearchLoopInterface
 
         return $search;
     }
-
 }

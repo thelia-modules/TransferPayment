@@ -32,23 +32,25 @@ use Thelia\Mailer\MailerFactory;
 use Thelia\Core\Template\ParserInterface;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\MessageQuery;
+
 /**
  * Class SendEMail
- * @package IciRelais\Listener
+ * @package TransferPayment\Listener
  * @author Thelia <info@thelia.net>
  */
 class SendEMail extends BaseAction implements EventSubscriberInterface
 {
-
-    /**
-     * @var MailerFactory
-     */
+    /** @var MailerFactory */
     protected $mailer;
-    /**
-     * @var ParserInterface
-     */
+
+    /** @var ParserInterface */
     protected $parser;
 
+    /**
+     * SendEMail constructor.
+     * @param ParserInterface $parser
+     * @param MailerFactory $mailer
+     */
     public function __construct(ParserInterface $parser,MailerFactory $mailer)
     {
         $this->parser = $parser;
@@ -56,20 +58,20 @@ class SendEMail extends BaseAction implements EventSubscriberInterface
     }
 
     /**
-     * @return \Thelia\Mailer\MailerFactory
+     * @return MailerFactory
      */
     public function getMailer()
     {
         return $this->mailer;
     }
 
-    /*
-     * @params OrderEvent $order
-     * Checks if order delivery module is icirelais and if order new status is sent, send an email to the customer.
+    /**
+     * @param OrderEvent $event
+     * @throws \Exception
      */
     public function update_status(OrderEvent $event)
     {
-        if ($event->getOrder()->getPaymentModuleId() === TransferPayment::getModCode()) {
+        if ($event->getOrder()->getPaymentModuleId() === TransferPayment::getModuleId()) {
 
             if ($event->getOrder()->isPaid()) {
                 $contact_email = ConfigQuery::read('store_email');
@@ -89,8 +91,7 @@ class SendEMail extends BaseAction implements EventSubscriberInterface
                     $this->parser->assign('order_id', $order->getId());
                     $this->parser->assign('order_ref', $order->getRef());
 
-                    $message
-                        ->setLocale($order->getLang()->getLocale());
+                    $message->setLocale($order->getLang()->getLocale());
 
                     $instance = \Swift_Message::newInstance()
                         ->addTo($customer->getEmail(), $customer->getFirstname()." ".$customer->getLastname())
@@ -101,38 +102,18 @@ class SendEMail extends BaseAction implements EventSubscriberInterface
                     $message->buildMessage($this->parser, $instance);
 
                     $this->getMailer()->send($instance);
-
                 }
             }
         }
-
     }
 
     /**
-     * Returns an array of event names this subscriber wants to listen to.
-     *
-     * The array keys are event names and the value can be:
-     *
-     *  * The method name to call (priority defaults to 0)
-     *  * An array composed of the method name to call and the priority
-     *  * An array of arrays composed of the method names to call and respective
-     *    priorities, or 0 if unset
-     *
-     * For instance:
-     *
-     *  * array('eventName' => 'methodName')
-     *  * array('eventName' => array('methodName', $priority))
-     *  * array('eventName' => array(array('methodName1', $priority), array('methodName2'))
-     *
-     * @return array The event names to listen to
-     *
-     * @api
+     * @return array
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            TheliaEvents::ORDER_UPDATE_STATUS => array("update_status", 128)
-        );
+        return [
+            TheliaEvents::ORDER_UPDATE_STATUS => ["update_status", 128]
+        ];
     }
-
 }

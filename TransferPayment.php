@@ -31,7 +31,6 @@ use Thelia\Module\PaymentModuleInterface;
 use Thelia\Model\ModuleImageQuery;
 use Thelia\Model\ModuleQuery;
 use TransferPayment\Model\TransferPaymentConfigQuery;
-use TransferPayment\Tools\Regex;
 
 /**
  * Class TransferPayment
@@ -49,7 +48,6 @@ class TransferPayment extends BaseModule implements PaymentModuleInterface
     }
 
     /**
-     *
      * This method is called on Payment loop.
      *
      * If you return true, the payment method will de display
@@ -81,7 +79,6 @@ class TransferPayment extends BaseModule implements PaymentModuleInterface
      */
     public function postActivation(ConnectionInterface $con = null)
     {
-
         /* insert the images from image folder if first module activation */
         $module = $this->getModuleModel();
         if (ModuleImageQuery::create()->filterByModule($module)->count() == 0) {

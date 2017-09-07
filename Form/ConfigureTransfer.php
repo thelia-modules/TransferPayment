@@ -105,5 +105,4 @@ class ConfigureTransfer extends BaseForm
     {
         return "configuretransferpayment";
     }
-
 }

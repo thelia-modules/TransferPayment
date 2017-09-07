@@ -52,7 +52,6 @@ class TransferPaymentConfig extends BaseTransferPaymentConfig implements ConfigI
     }
 
     /**
-     * @param  null  $file
      * @return array
      */
     public static function read()
@@ -76,9 +75,6 @@ class TransferPaymentConfig extends BaseTransferPaymentConfig implements ConfigI
         return $pks;
     }
 
-    /**
-     * @param null $file
-     */
     public function write()
     {
         $dbvals = $this->getDbValues();
@@ -124,6 +120,7 @@ class TransferPaymentConfig extends BaseTransferPaymentConfig implements ConfigI
 
     /**
      * @param string $iban
+     * @return $this
      */
     public function setIban($iban)
     {
@@ -142,6 +139,7 @@ class TransferPaymentConfig extends BaseTransferPaymentConfig implements ConfigI
 
     /**
      * @param string $name
+     * @return $this
      */
     public function setCompanyName($name)
     {
@@ -159,7 +157,8 @@ class TransferPaymentConfig extends BaseTransferPaymentConfig implements ConfigI
     }
 
     /**
-     * @param string $swift
+     * @param $bic
+     * @return $this
      */
     public function setBic($bic)
     {

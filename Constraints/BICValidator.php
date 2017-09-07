@@ -21,8 +21,8 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-
 namespace TransferPayment\Constraints;
+
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Thelia\Core\Translation\Translator;
@@ -32,7 +32,8 @@ use Thelia\Core\Translation\Translator;
  * @package TransferPayment\Constraints 
  * @author Thelia <info@thelia.net>
  */
-class BICValidator extends ConstraintValidator {
+class BICValidator extends ConstraintValidator
+{
     /**
      * Checks if the passed value is valid.
      *
@@ -54,11 +55,10 @@ class BICValidator extends ConstraintValidator {
                 Translator::getInstance()->trans(
                     $constraint->message
                 ),
-                array(
+                [
                     '{{ value }}' => $value
-                )
+                ]
             );
         }
     }
-
-} 
+}
