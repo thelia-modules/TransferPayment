@@ -23,8 +23,8 @@
 
 namespace TransferPayment\Listener;
 
+use Thelia\Log\Tlog;
 use Thelia\Model\ModuleConfigQuery;
-use TransferPayment\Model\TransferPaymentConfig;
 use TransferPayment\TransferPayment;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Action\BaseAction;
@@ -42,66 +42,60 @@ use Thelia\Model\MessageQuery;
  */
 class SendEMail extends BaseAction implements EventSubscriberInterface
 {
-
-    /**
-     * @var MailerFactory
-     */
-    protected $mailer;
-    /**
-     * @var ParserInterface
-     */
-    protected $parser;
-
-    public function __construct(ParserInterface $parser, MailerFactory $mailer)
+    public function __construct(
+        protected ParserInterface $parser,
+        protected MailerFactory $mailer
+    )
     {
-        $this->parser = $parser;
-        $this->mailer = $mailer;
     }
 
     /*
      * @params OrderEvent $order
-     * Checks if order delivery module is icirelais and if order new status is sent, send an email to the customer.
+     * Checks if the order delivery module is icirelais and if order new status is sent, email the customer.
      */
-    public function update_status(OrderEvent $event)
+    public function updateStatus(OrderEvent $event): void
     {
+        if ($event->getOrder()->getPaymentModuleId() !== TransferPayment::getModCode()) {
+            return;
+        }
+
+        if (!$event->getOrder()->isPaid()) {
+            return;
+        }
+
         $send_email = ModuleConfigQuery::create()
             ->filterByModuleId(TransferPayment::getModuleId())
             ->filterByName('sendEmail')
             ->findOne();
 
-        $send_email = $send_email->getValue();
-
-        if ($send_email !== '1') {
+        if (!$send_email?->getValue()) {
             return;
         }
 
-        if ($event->getOrder()->getPaymentModuleId() === TransferPayment::getModCode()) {
-
-            if ($event->getOrder()->isPaid()) {
-                $contact_email = ConfigQuery::read('store_email');
-
-                if ($contact_email) {
-                    $message = MessageQuery::create()
-                        ->filterByName('order_confirmation_transferpayment')
-                        ->findOne();
-
-                    if (false === $message) {
-                        throw new \Exception("Failed to load message 'order_confirmation_transferpayment'.");
-                    }
-
-                    $order = $event->getOrder();
-                    $customer = $order->getCustomer();
-
-                    $this->parser->assign('order_id', $order->getId());
-                    $this->parser->assign('order_ref', $order->getRef());
-
-                    $message
-                        ->setLocale($order->getLang()->getLocale());
-
-                    $this->mailer->sendEmailToCustomer($message->getName(), $customer);
-                }
-            }
+        if (!ConfigQuery::read('store_email')) {
+            Tlog::getInstance()->addError("Missing transfer payment email contact");
+            return;
         }
+
+        $message = MessageQuery::create()
+            ->filterByName('order_confirmation_transferpayment')
+            ->findOne();
+
+        if (false === $message) {
+            Tlog::getInstance()->addError("Missing transfer payment email template");
+            return;
+        }
+
+        $order = $event->getOrder();
+        $customer = $order->getCustomer();
+
+        $this->parser->assign('order_id', $order->getId());
+        $this->parser->assign('order_ref', $order->getRef());
+
+        $message->setLocale($order->getLang()->getLocale());
+
+        $this->mailer->sendEmailToCustomer($message->getName(), $customer);
+
     }
 
     /**
@@ -124,10 +118,10 @@ class SendEMail extends BaseAction implements EventSubscriberInterface
      *
      * @api
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
-            TheliaEvents::ORDER_UPDATE_STATUS => array("update_status", 128)
+            TheliaEvents::ORDER_UPDATE_STATUS => array("updateStatus", 128)
         );
     }
 
