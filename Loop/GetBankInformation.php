@@ -23,6 +23,7 @@
 
 namespace TransferPayment\Loop;
 
+use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Thelia\Core\Template\Element\BaseLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
@@ -46,7 +47,7 @@ class GetBankInformation extends BaseLoop implements PropelSearchLoopInterface
      *
      * @return LoopResult
      */
-    public function parseResults(LoopResult $loopResult)
+    public function parseResults(LoopResult $loopResult): LoopResult
     {
         /*
          * Check if loop is used with TransferPayment module
@@ -95,7 +96,7 @@ class GetBankInformation extends BaseLoop implements PropelSearchLoopInterface
      *
      * @return \Thelia\Core\Template\Loop\Argument\ArgumentCollection
      */
-    protected function getArgDefinitions()
+    protected function getArgDefinitions(): ArgumentCollection
     {
         return new ArgumentCollection(
             Argument::createIntTypeArgument("order_id", null, true, false)
@@ -107,7 +108,7 @@ class GetBankInformation extends BaseLoop implements PropelSearchLoopInterface
      *
      * @return \Propel\Runtime\ActiveQuery\ModelCriteria
      */
-    public function buildModelCriteria()
+    public function buildModelCriteria(): ModelCriteria
     {
         $order = OrderQuery::create()
             ->findPk($this->getOrderId());

@@ -25,7 +25,7 @@ namespace TransferPayment;
 
 use Propel\Runtime\Connection\ConnectionInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
-use Thelia\Install\Database;
+use Symfony\Component\HttpFoundation\Response;
 use Thelia\Model\Order;
 use Thelia\Module\BaseModule;
 use Thelia\Module\PaymentModuleInterface;
@@ -34,6 +34,7 @@ use Thelia\Model\ModuleQuery;
 use Thelia\Module\AbstractPaymentModule;
 use TransferPayment\Model\TransferPaymentConfigQuery;
 use TransferPayment\Tools\Regex;
+use Thelia\Core\Install\Database;
 
 /**
  * Class TransferPayment
@@ -45,9 +46,9 @@ class TransferPayment extends AbstractPaymentModule
     /**
      * @param Order $order
      */
-    public function pay(Order $order)
+    public function pay(Order $order): ?Response
     {
-        // nothing to do here.
+        return null;
     }
 
     /**
@@ -59,7 +60,7 @@ class TransferPayment extends AbstractPaymentModule
      *
      * @return boolean
      */
-    public function isValidPayment()
+    public function isValidPayment(): bool
     {
         /*
          * Check if database values are ok.
@@ -103,7 +104,7 @@ class TransferPayment extends AbstractPaymentModule
         $database->insertSql(null, array(__DIR__."/Config/thelia.sql"));
     }
 
-    public static function getModCode()
+    public static function getModCode(): int
     {
         $mod_code = "TransferPayment";
         $search = ModuleQuery::create()
@@ -112,7 +113,7 @@ class TransferPayment extends AbstractPaymentModule
         return $search->getId();
     }
 
-    public function manageStockOnCreation()
+    public function manageStockOnCreation(): bool
     {
         return false;
     }

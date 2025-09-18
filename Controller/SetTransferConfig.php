@@ -23,6 +23,7 @@
 
 namespace TransferPayment\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Model\ModuleConfig;
 use Thelia\Model\ModuleConfigQuery;
@@ -45,7 +46,7 @@ class SetTransferConfig extends BaseAdminController
      *
      * @Route("", name="_configure")
      */
-    public function configure()
+    public function configure(): RedirectResponse
     {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('TransferPayment'), AccessManager::UPDATE)) {
             return $response;
