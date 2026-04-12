@@ -153,7 +153,7 @@ class TransferPaymentConfig extends BaseTransferPaymentConfig implements ConfigI
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

@@ -124,7 +124,7 @@ class SendEMail extends BaseAction implements EventSubscriberInterface
      *
      * @api
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             TheliaEvents::ORDER_UPDATE_STATUS => array("update_status", 128)
