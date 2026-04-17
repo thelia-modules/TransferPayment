@@ -38,7 +38,7 @@ interface ConfigInterface
      * @param $name
      * @return string
      */
-    public function setName($name);
+    public function setName(?string $name);
 
     /**
      * @return string

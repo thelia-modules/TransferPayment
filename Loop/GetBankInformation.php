@@ -71,7 +71,7 @@ class GetBankInformation extends BaseLoop implements PropelSearchLoopInterface
      *
      * example :
      *
-     * public function getArgDefinitions()
+     * public function getArgDefinitions(): \Thelia\Core\Template\Loop\Argument\ArgumentCollection
      * {
      *  return new ArgumentCollection(
      *       Argument::createIntListTypeArgument('id'),
