@@ -64,14 +64,12 @@ class SendEMail extends BaseAction implements EventSubscriberInterface
      */
     public function update_status(OrderEvent $event)
     {
-        $send_email = ModuleConfigQuery::create()
+        $sendEmail = ModuleConfigQuery::create()
             ->filterByModuleId(TransferPayment::getModuleId())
             ->filterByName('sendEmail')
             ->findOne();
 
-        $send_email = $send_email?->getValue();
-
-        if ($send_email !== '1') {
+        if ($sendEmail?->getValue() !== '1') {
             return;
         }
 
