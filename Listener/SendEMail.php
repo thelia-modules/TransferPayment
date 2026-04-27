@@ -69,7 +69,7 @@ class SendEMail extends BaseAction implements EventSubscriberInterface
             ->filterByName('sendEmail')
             ->findOne();
 
-        $send_email = $send_email->getValue();
+        $send_email = $send_email?->getValue();
 
         if ($send_email !== '1') {
             return;
