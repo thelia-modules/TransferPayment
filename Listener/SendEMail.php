@@ -83,7 +83,7 @@ class SendEMail extends BaseAction implements EventSubscriberInterface
                         ->filterByName('order_confirmation_transferpayment')
                         ->findOne();
 
-                    if (false === $message) {
+                    if (null === $message) {
                         throw new \Exception("Failed to load message 'order_confirmation_transferpayment'.");
                     }
 
