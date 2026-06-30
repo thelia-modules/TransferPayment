@@ -106,11 +106,10 @@ class TransferPayment extends AbstractPaymentModule
 
     public static function getModCode(): int
     {
-        $mod_code = "TransferPayment";
         $search = ModuleQuery::create()
-            ->findOneByCode($mod_code);
+            ->findOneByCode('TransferPayment');
 
-        return $search->getId();
+        return $search?->getId() ?? 0;
     }
 
     public function manageStockOnCreation(): bool
