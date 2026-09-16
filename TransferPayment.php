@@ -24,6 +24,8 @@
 namespace TransferPayment;
 
 use Propel\Runtime\Connection\ConnectionInterface;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
 use Symfony\Component\HttpFoundation\Response;
 use Thelia\Model\Order;
@@ -86,6 +88,24 @@ class TransferPayment extends AbstractPaymentModule
     /**
      * @param ConnectionInterface $con
      */
+    public function update($currentVersion, $newVersion, ?ConnectionInterface $con = null): void
+    {
+        $finder = Finder::create()
+            ->name('*.sql')
+            ->depth(0)
+            ->sortByName()
+            ->in(__DIR__.'/Config/update');
+
+        $database = new Database($con);
+
+        /** @var SplFileInfo $file */
+        foreach ($finder as $file) {
+            if (version_compare($currentVersion, $file->getBasename('.sql'), '<')) {
+                $database->insertSql(null, [$file->getPathname()]);
+            }
+        }
+    }
+
     public function postActivation(ConnectionInterface $con = null): void
     {
         $module = $this->getModuleModel();
