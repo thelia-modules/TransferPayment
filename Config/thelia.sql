@@ -41,18 +41,18 @@ INSERT INTO `message_i18n` (`id`, `locale`, `title`, `subject`, `text_message`, 
   (@max,
    'fr_FR',
    'order confirmation_transferpayment',
-   'Paiement de la commande : {$order_ref}',
-   'Le paiement de votre commande : {$order_ref} a bien été reçu',
-   'Le paiement de votre commande : {$order_ref} a bien été reçu'
+   'Paiement de la commande : {{ order_ref }}',
+   'Le paiement de votre commande : {{ order_ref }} a bien été reçu',
+   'Le paiement de votre commande : {{ order_ref }} a bien été reçu'
    );
 -- and en_US
 INSERT INTO `message_i18n` (`id`, `locale`, `title`, `subject`, `text_message`, `html_message`) VALUES
   (@max,
    'en_US',
    'order confirmation_transferpayment',
-   'Paiement de la commande : {$order_ref}',
-   'Le paiement de votre commande : {$order_ref} a bien été reçu',
-   'Le paiement de votre commande : {$order_ref} a bien été reçu'
+   'Paiement de la commande : {{ order_ref }}',
+   'Le paiement de votre commande : {{ order_ref }} a bien été reçu',
+   'Le paiement de votre commande : {{ order_ref }} a bien été reçu'
   );
 
 
