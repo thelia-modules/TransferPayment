@@ -26,6 +26,7 @@ namespace TransferPayment\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Thelia\Core\Translation\Translator;
+use TransferPayment\TransferPayment;
 
 /**
  * Class BICValidator
@@ -52,7 +53,9 @@ class BICValidator extends ConstraintValidator {
         if(!preg_match("([a-zA-Z]{4}[a-zA-Z]{2}[a-zA-Z0-9]{2}([a-zA-Z0-9]{3})?)", $teststring)) {
             $this->context->addViolation(
                 Translator::getInstance()->trans(
-                    $constraint->message
+                    $constraint->message,
+                    [],
+                    TransferPayment::DOMAIN_NAME
                 ),
                 array(
                     '{{ value }}' => $value

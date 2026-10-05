@@ -69,7 +69,7 @@ class ConfigureTransfer extends BaseForm
         $this->formBuilder
             ->add(
                 "name", TextType::class, array(
-                "label" => Translator::getInstance()->trans("company name"),
+                "label" => Translator::getInstance()->trans("company name", [], TransferPayment::DOMAIN_NAME),
                 "label_attr" => array(
                     "for" => "namefield"
                 ),
@@ -79,7 +79,7 @@ class ConfigureTransfer extends BaseForm
                 "data" => !empty($config['companyName']) && $config['companyName'] !== null ? $config['companyName'] : "",
             ))
             ->add("iban", TextType::class, array(
-                "label" => Translator::getInstance()->trans("IBAN"),
+                "label" => Translator::getInstance()->trans("IBAN", [], TransferPayment::DOMAIN_NAME),
                 "label_attr" => array(
                     "for" => "ibanfield"
                 ),
@@ -90,7 +90,7 @@ class ConfigureTransfer extends BaseForm
                 "data" => !empty($config['iban']) && $config['iban'] !== null ? $config['iban'] : "",
             ))
             ->add("bic", TextType::class, array(
-                "label" => Translator::getInstance()->trans("BIC"),
+                "label" => Translator::getInstance()->trans("BIC", [], TransferPayment::DOMAIN_NAME),
                 "label_attr" => array(
                     "for" => "bicfield"
                 ),
@@ -104,7 +104,7 @@ class ConfigureTransfer extends BaseForm
                 "sendEmail",
                 CheckboxType::class,
                 [
-                    "label" => Translator::getInstance()->trans("Send confirmation email"),
+                    "label" => Translator::getInstance()->trans("Send confirmation email", [], TransferPayment::DOMAIN_NAME),
                     "label_attr" => [
                         "for" => "sendEmail"
                     ],
