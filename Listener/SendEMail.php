@@ -31,7 +31,6 @@ use Thelia\Action\BaseAction;
 use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Mailer\MailerFactory;
-use Thelia\Core\Template\ParserInterface;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\MessageQuery;
 
@@ -47,14 +46,9 @@ class SendEMail extends BaseAction implements EventSubscriberInterface
      * @var MailerFactory
      */
     protected $mailer;
-    /**
-     * @var ParserInterface
-     */
-    protected $parser;
 
-    public function __construct(ParserInterface $parser, MailerFactory $mailer)
+    public function __construct(MailerFactory $mailer)
     {
-        $this->parser = $parser;
         $this->mailer = $mailer;
     }
 
@@ -90,13 +84,17 @@ class SendEMail extends BaseAction implements EventSubscriberInterface
                     $order = $event->getOrder();
                     $customer = $order->getCustomer();
 
-                    $this->parser->assign('order_id', $order->getId());
-                    $this->parser->assign('order_ref', $order->getRef());
-
                     $message
                         ->setLocale($order->getLang()->getLocale());
 
-                    $this->mailer->sendEmailToCustomer($message->getName(), $customer);
+                    $this->mailer->sendEmailToCustomer(
+                        $message->getName(),
+                        $customer,
+                        [
+                            'order_id' => $order->getId(),
+                            'order_ref' => $order->getRef(),
+                        ]
+                    );
                 }
             }
         }
