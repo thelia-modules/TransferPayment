@@ -45,6 +45,9 @@ use Thelia\Core\Install\Database;
  */
 class TransferPayment extends AbstractPaymentModule
 {
+    /** The translation domain of the module (its I18n files), as the back-office templates use it. */
+    public const DOMAIN_NAME = 'transferpayment';
+
     /**
      * @param Order $order
      */
