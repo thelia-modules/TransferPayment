@@ -1,0 +1,21 @@
+{#
+    The bank account to transfer to, on the confirmation page of a Twig theme (theme hook
+    order-placed.additional-payment-info). A theme words it its own way with
+    modules/TransferPayment/order-placed.additional-payment-info.html.twig in its folder.
+
+    order            the order placed
+    introduction     the sentence before the account, translated
+    bank_information the lines of the module configuration in their order: name (companyName, iban, bic),
+                     label (translated) and value
+#}
+{% if bank_information is not empty %}
+    <div class="TransferInstructions">
+        <p>{{ introduction }}</p>
+        <dl>
+            {% for line in bank_information %}
+                <dt>{{ line.label }}</dt>
+                <dd>{{ line.value }}</dd>
+            {% endfor %}
+        </dl>
+    </div>
+{% endif %}
