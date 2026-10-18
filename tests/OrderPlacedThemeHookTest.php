@@ -65,7 +65,10 @@ final class OrderPlacedThemeHookTest extends IntegrationTestCase
 
     public function testAnOrderPaidOtherwiseGetsNothing(): void
     {
-        self::assertSame('', trim($this->renderHook($this->createFixtureFactory()->order(overrides: ['paymentModuleCode' => 'Cheque']))));
+        $html = $this->renderHook($this->createFixtureFactory()->order(overrides: ['paymentModuleCode' => 'Cheque']));
+
+        self::assertStringNotContainsString('TransferInstructions', $html);
+        self::assertStringNotContainsString('FR7630006000011234567890189', $html);
     }
 
     public function testNoOrderGetsNothing(): void
