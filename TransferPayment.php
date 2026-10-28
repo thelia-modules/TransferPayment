@@ -34,6 +34,7 @@ use Thelia\Module\PaymentModuleInterface;
 use Thelia\Model\ModuleImageQuery;
 use Thelia\Model\ModuleQuery;
 use Thelia\Module\AbstractPaymentModule;
+use Thelia\Module\BalanceChargingPaymentModuleInterface;
 use TransferPayment\Model\TransferPaymentConfigQuery;
 use TransferPayment\Tools\Regex;
 use Thelia\Core\Install\Database;
@@ -43,7 +44,7 @@ use Thelia\Core\Install\Database;
  * @package TransferPayment
  * author Thelia <info@thelia.net>
  */
-class TransferPayment extends AbstractPaymentModule
+class TransferPayment extends AbstractPaymentModule implements BalanceChargingPaymentModuleInterface
 {
     /** The translation domain of the module (its I18n files), as the back-office templates use it. */
     public const DOMAIN_NAME = 'transferpayment';
